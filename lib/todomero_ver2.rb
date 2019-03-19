@@ -1,3 +1,7 @@
+# Dir.chdir(File.dirname(__FILE__))
+
+
+
 
 #TODO:
 #1)Need to make it so that each list item has a checkbox instead of "Is done"[]
@@ -16,55 +20,54 @@
 
 # Unit test []
 
-# Bonus : make the king laugh if you have 10 items completed[]
+# Bonus : make the king laugh if you have 10 items completed[V]
 
 #after each action,all todo items will be shown on screen(Unless deleted) including status of V/Not V
-# they should be numbere
+# they should be numbere[V]
 
 
 
 class Todomero
 
+# *************
 
 
 def initialize(todo_list = [] )
         
     @todo_list = todo_list
+    @@vid_count = 0
 end
+
 
 
 # *************
 
+
+def open_vid(file_name)
+ file = open(file_name)
+
+
+vlc = Process.spawn ("#{file_name}")
+
+sleep 1
+
+Process.kill( 'QUIT IT', vlc)
+ # system %{cmd /c "start #{file_name}"}
+
+
+    file.close if file
+end
+
+# *************
 
 def  show_list
 
-
-
-
         puts ">>"
         puts @@todo_list
-        end
-
-
-# *************
-
-
-def remove #in edit now
-
-                remove = gets.chomp
-
-#remove selected item from array of list
-
-#remove selected item number
-
-self.menu
-
 end
 
 
-
 # *************
-
 
 
 def add
@@ -79,11 +82,24 @@ self.show_list
         # add typed item to list [V]
 
 
+puts "dir is #{Dir.pwd}"
+
+
 puts "Type the new todo item"
 nv  = gets.chomp
 
 @@todo_list << nv
+@@vid_count += 1
 
+
+if @@vid_count == 1
+    puts "THE KING IS HAPPY"
+
+puts "'HOHOHOHOHOHO'"
+    self.open_vid("ho.mp4")
+else
+puts "keep adding items..."
+end
 
 
 
@@ -108,7 +124,6 @@ self.add if goback == "No"
 
 
 
-
 end
 
 
@@ -130,7 +145,7 @@ self.show_list
                 puts "select a todo item from the list"
 
 
-                #todo_select should take from @@todo_list[]
+                #todo_select should take from @@todo_list[V]
 
                 # @@todo_list.update(@@todo_list) do |key, value|  
                
@@ -140,12 +155,10 @@ self.show_list
                 @@todo_list.map { |val,index|  
 
                 index = gets.chomp
-                puts "You selected #{index}"
-                puts "#{val}"
-
-
-                #1 select element[] 
-                #2 edit it[]
+                puts "You selected #{val}"
+   
+                #1 select element[V] 
+                #2 edit it[V]
 
  puts "What do you want to do with #{val}"
    puts "Type Done or remove"
@@ -156,7 +169,7 @@ self.show_list
 
 
                         puts "#{val} is done"
-                        val << " is #{action}" 
+                        val << " [V]" 
 
                         self.show_list
                         #add here the change to array[V]
@@ -170,10 +183,10 @@ self.show_list
                         self.show_list
 
 
-                else #fix??
-                        @@todo_list[key] = selection
-                        puts "#{value} is #{selection} "
-                        selection << action 
+                else #fix??[]
+ 
+                        puts "#{val} is #{action} "
+                        val << " is #{action}" 
 
 
                 end
@@ -212,7 +225,7 @@ def menu
 
         elsif selection.include?("delete")
 
-                self.remove
+                self.edit
 
         elsif selection.include?("edit")
         #3)Mark as complete [v]
@@ -227,6 +240,11 @@ def menu
 
 
 end
+
+
+
+
+
 
 puts @@todo_list = ["Eat_cake","Play"] 
 
