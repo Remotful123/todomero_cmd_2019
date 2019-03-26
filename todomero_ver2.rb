@@ -1,6 +1,6 @@
-# Dir.chdir(File.dirname(__FILE__))
+Dir.chdir(File.dirname(__FILE__))
 
-
+puts Dir.pwd
 
 
 #TODO:
@@ -17,25 +17,39 @@
         #2)Delete todo[V]
         #3)Edit[V]
         #4)Show list[V]
+        # Fix video Errno::ENOEXEC [V]
+       
 
 # Unit test []
+     # change the gets chomp to a method that all will use[]
 
 # Bonus : make the king laugh if you have 10 items completed[V]
 
 #after each action,all todo items will be shown on screen(Unless deleted) including status of V/Not V
 # they should be numbere[V]
 
+module Todomero
 
 
-class Todomero
+
+
+
+
+# *******************************************
+
+class App
+
+attr_writer :nv
 
 # *************
 
 
-def initialize(todo_list = [] )
-        
-    @todo_list = todo_list
+def initialize(todo_list)
+    @todo_list  = todo_list 
+    @todo_list = []
     @@vid_count = 0
+    
+
 end
 
 
@@ -43,17 +57,17 @@ end
 # *************
 
 
+
 def open_vid(file_name)
  file = open(file_name)
 
 
-vlc = Process.spawn ("#{file_name}")
+ system %{cmd /c "start #{file_name}"}
 
-sleep 1
+sleep 2
 
-Process.kill( 'QUIT IT', vlc)
- # system %{cmd /c "start #{file_name}"}
-
+#How to close any media playe not just VLC?[]
+system %{taskkill /IM vlc.exe}
 
     file.close if file
 end
@@ -70,14 +84,36 @@ end
 # *************
 
 
-def add
+
+
+# def input_output(input_stream, output_stream)
+#     @input_stream = input_stream
+#     @output_stream = output_stream
+
+# end
+
+
+# def welcome_user
+#     @output_stream.puts "Welcome"
+#     @action = get_input
+    
+# end
+
+
+
+# def get_input
+#     @input_stream.gets.chomp
+# end
+# *******************************
+
+
+def add(nv)
+
 
 
 # TODO add number to the array items [V]
 
-
 self.show_list
-
 
         # add typed item to list [V]
 
@@ -92,7 +128,7 @@ nv  = gets.chomp
 @@vid_count += 1
 
 
-if @@vid_count == 1
+if @@vid_count == 10
     puts "THE KING IS HAPPY"
 
 puts "'HOHOHOHOHOHO'"
@@ -127,6 +163,11 @@ self.add if goback == "No"
 end
 
 
+
+def simple(n,a)
+    c = n + a 
+    c.to_i
+end
 
 
 # *************
@@ -203,7 +244,7 @@ end
 # *************
 
 
-def menu
+def menu(*selection)
 
 
         puts "select an option."
@@ -211,7 +252,7 @@ def menu
         puts "2. Edit or delete item"
         puts "3. Show list"
 
-        selection = gets.chomp
+        selection = gets.chomp 
 
         #1)Add new item
 
@@ -252,11 +293,12 @@ puts "Welcome to TODOMERO"
 
 end
 
+end
 
-gog = Todomero.new
+# gog = Todomero::App.new(["jo","joto"])
 
 
-gog.menu
+# gog.menu
 
 
 
